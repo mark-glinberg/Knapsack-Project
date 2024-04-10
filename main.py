@@ -1,5 +1,6 @@
 import argparse
 import random
+# import your python script here when you complete your algorithm
 
 def run_alg(args):
     # print(f"-i, --inst \t{args.filePath} (filePath)")
@@ -15,6 +16,7 @@ def run_alg(args):
     if seed != 0:
         random.seed(seed)
 
+    # Skeleton for calling algorithms
     if args.alg == 'bnb':
         print("Executing Branch-and-Bound algorithm")
         # EXEC bnb algorithm
