@@ -1,48 +1,65 @@
 import argparse
 import random
-import pandas as pd
+
 from approximation import approximation
 # import your python script here when you complete your algorithm
 
 
 def run_alg(args):
-    # Sets the seed for random, when generating a random num later you must call random.seed(seed) before generating the random num
-    # due to random being a pseudo-random generator
+    if "small" in args.dataPath:
+        inputPath = "DATASET/small_scale/" + args.dataPath
+        solutionPath = "DATASET/small_scale_solution/" + args.dataPath
+    elif "large" in args.dataPath:
+        inputPath = "DATASET/large_scale/" + args.dataPath
+        solutionPath = "DATASET/large_scale_solution/" + args.dataPath
+    else:
+        inputPath = "DATASET/test/" + args.dataPath
+        solutionPath = "DATASET/test_solution/" + args.dataPath
+
     if seed != 0:
         random.seed(seed)
 
     # Parse input file and init lists for values and weights
     values = []
     weights = []
-
-    data = open(args.filePath, "r")
-    _, capacity = map(int, data.readline().split())
-
-    for line in data.readlines():
+    f = open(inputPath, "r")
+    _, capacity = map(int, f.readline().split())
+    for line in f.readlines():
         value, weight = line.split()
         values.append(float(value))
         weights.append(float(weight))
+    f.close()
+
+    # Get optimal solution from file
+    f = open(solutionPath, "r")
+    opt_sol = int(f.read())
+    f.close()
 
     # Skeleton for calling algorithms
     if args.alg == 'bnb':
         print("Executing Branch-and-Bound algorithm")
         # EXEC bnb algorithm
     elif args.alg == 'approx':
-        print("Executing Approximation algorithm")
-        approximation(values, weights, capacity)
+        alg_sol, items, alg_time = approximation(values, weights, capacity, cutoff)
+
+        # Create solution file
+        rel_error = (abs(opt_sol - alg_sol)) / opt_sol
+        f = open(f"{args.dataPath}_{args.alg}_{args.cutoff}_{args.seed}.sol", "w")
+        f.write("{}\n".format(rel_error))
+        f.write(", ".join(map(str, items)))
+        f.close()
     elif args.alg == 'ls1':
         print("Executing 1st Local Search algorithm")
         # EXEC 1st local search algorithm
     else:
         print("Executing 2nd Local Search algorithm")
         # EXEC 2nd local search algorithm
-
-
+    
 if __name__ == '__main__':
     # Init default parameters
-    filePath = 'DATASET/small_scale/small_1'
+    dataPath = 'small_1'
     alg = 'bnb'
-    cutoff = 1000
+    cutoff = 500
     seed = 0
 
     # Init args
@@ -53,9 +70,9 @@ if __name__ == '__main__':
 
     parser.add_argument('-i', '--inst', action="store",
                         type=str,
-                        dest="filePath",
-                        default=filePath,
-                        help="path to input file")
+                        dest="dataPath",
+                        default=dataPath,
+                        help="input file to read (ex: small_1)")
     
     parser.add_argument('-a', '--alg', action="store",
                         type=str,
@@ -77,5 +94,4 @@ if __name__ == '__main__':
                         help="seed used to randomize")
     
     args = parser.parse_args()
-
     run_alg(args)
