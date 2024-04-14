@@ -14,7 +14,7 @@ def approximation(values, weights, capacity, cutoff):
     item_frame = item_frame.sort_values(by=['ratios'], ascending=False)
 
     # Init vars for greedy algorithm
-    solution = [0 for _ in range(len(values))]
+    solution = []
     cur_weight = 0
     cur_value = 0
     cutoff_reached = False
@@ -27,7 +27,7 @@ def approximation(values, weights, capacity, cutoff):
         if item['weights'] + cur_weight < capacity:
             cur_value += item['values']
             cur_weight += item['weights']
-            solution[idx] = 1
+            solution.append(idx)
 
     alg_time = time.time() - start
     if cutoff_reached:
