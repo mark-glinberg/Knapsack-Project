@@ -2,6 +2,7 @@ import argparse
 import random
 
 from approximation import approximation
+from simulated_annealing import simulated_annealing
 # import your python script here when you complete your algorithm
 
 
@@ -49,8 +50,17 @@ def run_alg(args):
         f.write(", ".join(map(str, items)))
         f.close()
     elif args.alg == 'ls1':
-        print("Executing 1st Local Search algorithm")
+        print("Executing 1st Local Search algorithm (simulated annealing)")
         # EXEC 1st local search algorithm
+        initial_temp = 1000
+        cooling_rate = 0.03
+        stopping_temp = 1
+
+        best_value, best_solution = simulated_annealing(values, weights, capacity, initial_temp, cooling_rate, stopping_temp)
+
+        print(best_solution)
+        print(best_value)
+
     else:
         print("Executing 2nd Local Search algorithm")
         # EXEC 2nd local search algorithm
@@ -58,7 +68,7 @@ def run_alg(args):
 if __name__ == '__main__':
     # Init default parameters
     dataPath = 'small_1'
-    alg = 'bnb'
+    alg = 'ls1'
     cutoff = 500
     seed = 0
 
