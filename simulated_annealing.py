@@ -1,7 +1,10 @@
 import random
 import math
+import time
 
 def simulated_annealing(values, weights, capacity, initial_temp, cooling_rate, stopping_temp):
+    start = time.time()
+    solution_trace = []
     # Utility function to calculate the total weight and value of the current knapsack
     def knapsack_value(knapsack):
         total_weight = sum(weights[i] for i in range(len(knapsack)) if knapsack[i])
@@ -22,7 +25,7 @@ def simulated_annealing(values, weights, capacity, initial_temp, cooling_rate, s
     temperature = initial_temp
 
     # Decrease temperature until stop
-    while temperature > stopping_temp:
+    while temperature > stopping_temp and time.time() - start < 300:
         # Generate a neighboring solution (flip one bit)
         neighbor = current_solution[:]
         bit_to_flip = random.randint(0, n - 1)
@@ -43,8 +46,16 @@ def simulated_annealing(values, weights, capacity, initial_temp, cooling_rate, s
             if current_value > best_value:
                 best_solution = current_solution[:]
                 best_value = current_value
+                timestamp = time.time() - start
+                solution_trace.append((timestamp, best_value))
 
         # Decrease the temperature
-        temperature *= (1 - cooling_rate)
+        temperature -= cooling_rate
 
-    return best_value, best_solution
+    best_solution_indices = [i for i, selected in enumerate(best_solution) if selected]
+
+
+    with open('solution_trace.csv', 'w') as f:
+        for timestamp, value in solution_trace:
+            f.write(f"{timestamp:.5f}, {value}\n")
+    return best_value, best_solution_indices
