@@ -64,14 +64,12 @@ def run_alg(args):
         print("Executing Branch-and-Bound algorithm")
         # EXEC bnb algorithm
     elif args.alg == 'approx':
-        alg_sol, items, alg_time = approximation(values, weights, capacity, cutoff)
+        print("Executing Approximation algorithm")
+        best_value, best_solution, alg_time = approximation(values, weights, capacity, cutoff)
 
         # Create solution file
-        rel_error = (abs(opt_sol - alg_sol)) / opt_sol
-        f = open(f"{args.dataPath}_{args.alg}_{args.cutoff}_{args.seed}.sol", "w")
-        f.write("{}\n".format(rel_error))
-        f.write(", ".join(map(str, items)))
-        f.close()
+        print(best_solution)
+        print(best_value)
     elif args.alg == 'ls1':
         print("Executing 1st Local Search algorithm (simulated annealing)")
         # EXEC 1st local search algorithm
