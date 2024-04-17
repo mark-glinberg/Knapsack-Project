@@ -1,24 +1,36 @@
 import argparse
 import random
+import os
 
 from approximation import approximation
 from simulated_annealing import simulated_annealing
+from hill_climbing import hill_climbing
 # import your python script here when you complete your algorithm
 
-
 def run_alg(args):
+    # Find path of file and determine whether it's a test file
     if "small" in args.dataPath:
+        test = False
         inputPath = "DATASET/small_scale/" + args.dataPath
         solutionPath = "DATASET/small_scale_solution/" + args.dataPath
     elif "large" in args.dataPath:
+        test = False
         inputPath = "DATASET/large_scale/" + args.dataPath
         solutionPath = "DATASET/large_scale_solution/" + args.dataPath
     else:
+        test = True
         inputPath = "DATASET/test/" + args.dataPath
         solutionPath = "DATASET/test_solution/" + args.dataPath
 
-    if seed != 0:
-        random.seed(seed)
+    # Take input seed
+    if args.seed != 0:
+        random.seed(args.seed)
+    
+    # Take cutoff input or a default of 30 secs
+    if args.cutoff > 0:
+        cutoff = args.cutoff
+    else:
+        cutoff = 30
 
     # Parse input file and init lists for values and weights
     values = []
@@ -32,11 +44,22 @@ def run_alg(args):
     f.close()
 
     # Get optimal solution from file
-    f = open(solutionPath, "r")
-    opt_sol = int(f.read())
-    f.close()
-
-    # Skeleton for calling algorithms
+    if test:
+        # Turn full solution into an array for test files
+        opt_sol = []
+        f = open(solutionPath, "r")
+        for line in f.readlines():
+            opt_sol.append(int(line))
+        f.close()
+    else:
+        # Grab optimal solution as an int for data files
+        f = open(solutionPath, "r")
+        opt_sol = int(f.read())
+        f.close()
+    
+    # Whether to create a trace file
+    trace_file = False
+    # Calling different algorithms
     if args.alg == 'bnb':
         print("Executing Branch-and-Bound algorithm")
         # EXEC bnb algorithm
@@ -60,10 +83,36 @@ def run_alg(args):
 
         print(best_solution)
         print(best_value)
-
     else:
-        print("Executing 2nd Local Search algorithm")
-        # EXEC 2nd local search algorithm
+        print("Executing 2nd Local Search algorithm (hill climbing)")
+        # EXEC 2nd local serach algorithm
+        best_value, best_solution, trace = hill_climbing(values, weights, capacity, cutoff)
+        # Flag to generate a trace file
+        trace_file = True
+
+        print(best_solution)
+        print(best_value)
+        if test:
+            print(opt_sol == best_solution)
+        else:
+            print(opt_sol == best_value)
+
+    # Generate output file if not testing our code
+    if not test:
+        filename = "our_solutions/{}_{}_{}_{}.sol".format(args.dataPath, args.alg, args.cutoff, args.seed)
+        os.makedirs(os.path.dirname(filename), exist_ok=True)
+        with open(filename, "w") as f:
+            f.write(str(best_value) + "\n")
+            f.write(", ".join(map(str, best_solution)))
+
+        # Generate trace file if the algorithm calls for it
+        if trace_file:
+            filename = "our_trace_files/{}_{}_{}_{}.trace".format(args.dataPath, args.alg, args.cutoff, args.seed)
+            os.makedirs(os.path.dirname(filename), exist_ok=True)
+            with open(filename, "w") as f:
+                for step in trace:
+                    f.write(", ".join(map(str, step)) + "\n")
+
     
 if __name__ == '__main__':
     # Init default parameters
