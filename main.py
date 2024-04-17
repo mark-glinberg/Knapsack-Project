@@ -5,6 +5,7 @@ import os
 from approximation import approximation
 from simulated_annealing import simulated_annealing
 from hill_climbing import hill_climbing
+from generate_plots import generate_plots
 # import your python script here when you complete your algorithm
 
 def run_alg(args):
@@ -111,7 +112,9 @@ def run_alg(args):
                 for step in trace:
                     f.write(", ".join(map(str, step)) + "\n")
 
-    
+def plot(args):
+    generate_plots(args.alg, args.generate)
+
 if __name__ == '__main__':
     # Init default parameters
     dataPath = 'small_1'
@@ -150,5 +153,16 @@ if __name__ == '__main__':
                         default=seed,
                         help="seed used to randomize")
     
+    parser.add_argument('-p', '--plot', action="store_true",
+                        dest="plot",
+                        help="whether or not to plot local searches")
+    
+    parser.add_argument('-g', '--generate', action="store_true",
+                        dest="generate",
+                        help="whether or not to generate new trace files for plots")
+    
     args = parser.parse_args()
-    run_alg(args)
+    if args.plot:
+        plot(args)
+    else:
+        run_alg(args)
