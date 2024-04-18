@@ -47,12 +47,12 @@ def run_alg(args):
         opt_sol = []
         f = open(solutionPath, "r")
         for line in f.readlines():
-            opt_sol.append(int(line))
+            opt_sol.append(float(line))
         f.close()
     else:
         # Grab optimal solution as an int for data files
         f = open(solutionPath, "r")
-        opt_sol = int(f.read())
+        opt_sol = float(f.read())
         f.close()
     
     # Whether to create a trace file
@@ -63,9 +63,13 @@ def run_alg(args):
         # EXEC bnb algorithm
         best_value, best_solution, trace = BnB_knapsack(inputPath, cutoff, "our_solutions", "our_trace_files")
         trace_file = True
-        
+        best_value = round(best_value, 4)
         print(best_solution)
         print(best_value)
+        if test:
+            print(opt_sol == best_solution)
+        else:
+            print(opt_sol == best_value)
     elif args.alg == 'approx':
         print("Executing Approximation algorithm")
         best_value, best_solution, alg_time = approximation(values, weights, capacity, cutoff)

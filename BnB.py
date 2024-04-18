@@ -25,7 +25,7 @@ class Node:
     def __lt__(self, other):
         return other.weight - self.weight
 
-def bound(node, n, W, arr):
+def bound(node, n, W, arr, init=False):
     if node.weight >= W:
         return 0
  
@@ -37,6 +37,9 @@ def bound(node, n, W, arr):
         u_bound += arr[j][0]
         t_w += arr[j][1]
         j += 1
+    
+    if init:
+        return u_bound, j
 
     if j < n:
         u_bound += ((W - t_w) * arr[j][0] / arr[j][1])
@@ -51,8 +54,8 @@ def solution(W, arr, n, maxTime = float('inf')):
     curr = Node(-1, 0, 0, [])
     priority_queue.put(curr)
  
-    max_profit = 0
-    res_state = None
+    max_profit, end = bound(curr, n, W, arr, init=True)
+    res_state = [i for i in range(end)]
     traces = []
     is_optim = True
  
