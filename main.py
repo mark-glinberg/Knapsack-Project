@@ -5,6 +5,7 @@ import os
 from approximation import approximation
 from simulated_annealing import simulated_annealing
 from hill_climbing import hill_climbing
+from BnB import BnB_knapsack
 from generate_plots import generate_plots
 # import your python script here when you complete your algorithm
 
@@ -60,6 +61,11 @@ def run_alg(args):
     if args.alg == 'bnb':
         print("Executing Branch-and-Bound algorithm")
         # EXEC bnb algorithm
+        best_value, best_solution, trace = BnB_knapsack(inputPath, cutoff, "our_solutions", "our_trace_files")
+        trace_file = True
+        
+        print(best_solution)
+        print(best_value)
     elif args.alg == 'approx':
         print("Executing Approximation algorithm")
         best_value, best_solution, alg_time = approximation(values, weights, capacity, cutoff)
