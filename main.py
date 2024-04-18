@@ -85,13 +85,12 @@ def run_alg(args):
     elif args.alg == 'ls1':
         print("Executing 1st Local Search algorithm (simulated annealing)")
         # EXEC 1st local search algorithm
-        initial_temp = 1000
-        cooling_rate = 0.03
-        stopping_temp = 1
 
-        best_value, best_solution = simulated_annealing(values, weights, capacity, initial_temp, cooling_rate, stopping_temp)
+        best_value, best_solution_indices = simulated_annealing(values, weights, capacity, 0)
 
-        print(best_solution)
+        # Create solution file
+        
+        print(best_solution_indices)
         print(best_value)
     else:
         print("Executing 2nd Local Search algorithm (hill climbing)")
@@ -134,7 +133,7 @@ def plot(args):
 
 if __name__ == '__main__':
     # Init default parameters
-    dataPath = 'small_1'
+    dataPath = 'large_3'
     alg = 'ls1'
     cutoff = 500
     seed = 0
