@@ -22,10 +22,6 @@ def run_alg(args):
         test = True
         inputPath = "DATASET/test/" + args.dataPath
         solutionPath = "DATASET/test_solution/" + args.dataPath
-
-    # Take input seed
-    if args.seed != 0:
-        random.seed(args.seed)
     
     # Take cutoff input or a default of 30 secs
     if args.cutoff > 0:
@@ -84,8 +80,8 @@ def run_alg(args):
         print(best_value)
     else:
         print("Executing 2nd Local Search algorithm (hill climbing)")
-        # EXEC 2nd local serach algorithm
-        best_value, best_solution, trace = hill_climbing(values, weights, capacity, cutoff)
+        # EXEC 2nd local search algorithm
+        best_value, best_solution, trace = hill_climbing(values, weights, capacity, cutoff, seed)
         # Flag to generate a trace file
         trace_file = True
 

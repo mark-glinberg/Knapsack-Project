@@ -26,14 +26,12 @@ def generate_traces(method, directory):
         f.close()
         
         for seed in seeds:
-            # set seed
-            random.seed(seed)
             # Run simulated annealing
             if method == "ls1":
                 return  # ADD METHOD HERE
             # Run hill climbing
             elif method == "ls2":
-                best_value, best_solution, trace = hill_climbing(values, weights, capacity, cutoff)
+                best_value, best_solution, trace = hill_climbing(values, weights, capacity, cutoff, seed)
             else:
                 print("Please use a local search method to graph QRTD and SQD plots")
                 return
