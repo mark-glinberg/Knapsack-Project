@@ -9,7 +9,13 @@ from BnB import BnB_knapsack
 from generate_plots import generate_plots
 # import your python script here when you complete your algorithm
 
-def run_alg(args):
+"""
+Main file for handling command line arguments and calling various scripts. Parses input 
+to genereate list of items by value and weight. Runs algorithms using command line arguments 
+and calling corresponding scripts. Generates plots using separate script. 
+"""
+
+def run_alg(args):        
     # Find path of file and determine whether it's a test file
     if "small" in args.dataPath:
         test = False

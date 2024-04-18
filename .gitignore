@@ -1,5 +1,3 @@
 __pycache__/
 *.py[cod]
-*.sol
-our_solution/
 our_trace_files/
