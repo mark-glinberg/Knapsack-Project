@@ -1,6 +1,5 @@
 __pycache__/
 *.py[cod]
 *.sol
-*.trace
 our_solution/
 our_trace_files/
