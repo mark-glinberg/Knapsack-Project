@@ -63,6 +63,7 @@ def run_alg(args):
         # EXEC bnb algorithm
         best_value, best_solution, trace = BnB_knapsack(inputPath, cutoff, "our_solutions", "our_trace_files")
         trace_file = True
+        args.seed = None
         best_value = round(best_value, 4)
         print(best_solution)
         print(best_value)
@@ -104,7 +105,10 @@ def run_alg(args):
 
     # Generate output file if not testing our code
     if not test:
-        filename = "our_solutions/{}_{}_{}_{}.sol".format(args.dataPath, args.alg, args.cutoff, args.seed)
+        if args.seed:
+            filename = "our_solutions/{}_{}_{}_{}.sol".format(args.dataPath, args.alg, args.cutoff, args.seed)
+        else:
+            filename = "our_solutions/{}_{}_{}.sol".format(args.dataPath, args.alg, args.cutoff)
         os.makedirs(os.path.dirname(filename), exist_ok=True)
         with open(filename, "w") as f:
             f.write(str(best_value) + "\n")
@@ -112,7 +116,10 @@ def run_alg(args):
 
         # Generate trace file if the algorithm calls for it
         if trace_file:
-            filename = "our_trace_files/{}_{}_{}_{}.trace".format(args.dataPath, args.alg, args.cutoff, args.seed)
+            if args.seed:
+                filename = "our_trace_files/{}_{}_{}_{}.trace".format(args.dataPath, args.alg, args.cutoff, args.seed)
+            else:
+                filename = "our_trace_files/{}_{}_{}.trace".format(args.dataPath, args.alg, args.cutoff)
             os.makedirs(os.path.dirname(filename), exist_ok=True)
             with open(filename, "w") as f:
                 for step in trace:
