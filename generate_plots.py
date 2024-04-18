@@ -28,7 +28,7 @@ def generate_traces(method, directory):
         for seed in seeds:
             # Run simulated annealing
             if method == "ls1":
-                return  # ADD METHOD HERE
+                best_value, best_solution, trace = simulated_annealing(values, weights, capacity, 0, cutoff)
             # Run hill climbing
             elif method == "ls2":
                 best_value, best_solution, trace = hill_climbing(values, weights, capacity, cutoff, seed)

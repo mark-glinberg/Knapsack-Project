@@ -86,11 +86,12 @@ def run_alg(args):
         print("Executing 1st Local Search algorithm (simulated annealing)")
         # EXEC 1st local search algorithm
 
-        best_value, best_solution_indices = simulated_annealing(values, weights, capacity, 0)
+        best_value, best_solution, trace = simulated_annealing(values, weights, capacity, 0, cutoff)
 
+        trace_file = True
         # Create solution file
         
-        print(best_solution_indices)
+        print(best_solution)
         print(best_value)
     else:
         print("Executing 2nd Local Search algorithm (hill climbing)")
