@@ -68,7 +68,11 @@ def run_alg(args):
         print(best_solution)
         print(best_value)
         if test:
-            print(opt_sol == best_solution)
+            sol_val = 0
+            for i in range(len(opt_sol)):
+                if opt_sol[i] == 1.0:
+                    sol_val += values[i]
+            print(sol_val == best_value)
         else:
             print(opt_sol == best_value)
     elif args.alg == 'approx':
