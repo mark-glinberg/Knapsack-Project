@@ -2,60 +2,56 @@ import random
 import math
 import time
 
-def simulated_annealing(values, weights, capacity, initial_temp, cooling_rate, stopping_temp):
+def knapsack_value(knapsack, weights, values):
+    total_weight = sum(weights[i] for i, included in enumerate(knapsack) if included)
+    total_value = sum(values[i] for i, included in enumerate(knapsack) if included)
+    return total_value, total_weight
+
+def initialize_solution(weights, capacity):
+    solution = [False] * len(weights)
+    current_weight = 0
+    items = list(range(len(weights)))
+    random.shuffle(items)  # Randomize the order of items to consider for adding
+    for item in items:
+        if current_weight + weights[item] <= capacity:
+            solution[item] = True
+            current_weight += weights[item]
+    return solution
+
+def simulated_annealing(values, weights, capacity, stopping_temp):
     start = time.time()
-    solution_trace = []
-    # Utility function to calculate the total weight and value of the current knapsack
-    def knapsack_value(knapsack):
-        total_weight = sum(weights[i] for i in range(len(knapsack)) if knapsack[i])
-        total_value = sum(values[i] for i in range(len(knapsack)) if knapsack[i])
-        if total_weight > capacity:
-            return 0  #exceeds capacity
-        return total_value
-
-    # Initialize a random solution
-    n = len(values)
-    current_solution = [random.choice([True, False]) for _ in range(n)]
-    current_value = knapsack_value(current_solution)
-
+    initial_temp = 100 + len(values) * 5
+    cooling_rate = 1 / (10 + 0.1 * len(values))
+    current_solution = initialize_solution(weights, capacity)
+    current_value, current_weight = knapsack_value(current_solution, weights, values)
+    
     best_solution = current_solution[:]
     best_value = current_value
 
-    # Begin with initial temperature
     temperature = initial_temp
 
-    # Decrease temperature until stop
     while temperature > stopping_temp and time.time() - start < 300:
-        # Generate a neighboring solution (flip one bit)
+        # Create random solution
+        item_to_flip = random.randint(0, len(weights) - 1)
         neighbor = current_solution[:]
-        bit_to_flip = random.randint(0, n - 1)
-        neighbor[bit_to_flip] = not neighbor[bit_to_flip]
+        neighbor[item_to_flip] = not neighbor[item_to_flip]
+        neighbor_value, neighbor_weight = knapsack_value(neighbor, weights, values)
 
-        # Evaluate the new solution
-        neighbor_value = knapsack_value(neighbor)
+        if neighbor_weight <= capacity:
+            # Find delta
+            delta_value = neighbor_value - current_value
 
-        # Calculate the change in value
-        delta_value = neighbor_value - current_value
+            # Consider cases
+            if delta_value > 0 or random.random() < math.exp(delta_value / temperature):
+                current_solution = neighbor[:]
+                current_value = neighbor_value
+                current_weight = neighbor_weight
 
-        # Determine if we should accept the new solution
-        if delta_value > 0 or random.random() < math.exp(delta_value / temperature):
-            current_solution = neighbor[:]
-            current_value = neighbor_value
+                if current_value > best_value:
+                    best_solution = current_solution[:]
+                    best_value = current_value
 
-            # Check if the new solution is the best we've found so far
-            if current_value > best_value:
-                best_solution = current_solution[:]
-                best_value = current_value
-                timestamp = time.time() - start
-                solution_trace.append((timestamp, best_value))
-
-        # Decrease the temperature
+        # Cool down temperature
         temperature -= cooling_rate
 
-    best_solution_indices = [i for i, selected in enumerate(best_solution) if selected]
-
-
-    with open('solution_trace.csv', 'w') as f:
-        for timestamp, value in solution_trace:
-            f.write(f"{timestamp:.5f}, {value}\n")
-    return best_value, best_solution_indices
+    return best_value, best_solution
