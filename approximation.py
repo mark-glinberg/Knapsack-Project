@@ -1,6 +1,23 @@
 import time
 import pandas as pd
 
+"""
+Approximation algorithm for the 0-1 knapsack problem using a greedy approach. Calculates the ratio 
+of value to weight for each item and sorts in descending order based on ratio. Selects the item with 
+the largest ratio at each iteration until the knapsack is filled.
+
+Parameters:
+    values (list(float)): Values for each item
+    weights (list(float)): Weights for each item
+    capacity (int): Maximum weight allowed for knapsack
+    cutoff (int): Maximum time algorithm can run
+
+Returns:
+    cur_value (float): Maximum value for solution found by algorithm
+    cur_value list(int): List of items chosen by the solution found by the algorithm
+    alg_time (float): Time taken to run the algorithm
+"""
+
 def approximation(values, weights, capacity, cutoff):
     start = time.time()
 
