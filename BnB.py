@@ -107,6 +107,7 @@ def BnB_knapsack(in_dir, cutoff=60, dir_solution="", dir_trace=""):
 
     arr = [(node_group[i][0], node_group[i][1], i) for i in range(len(node_group))]
     n = len(arr)
-    
+    start = time.time()
     max_profit, state, traces, _ = solution(totcst, arr, n, cutoff)
-    return max_profit, state, traces
+    end = time.time()
+    return max_profit, state, traces, end-start
