@@ -18,8 +18,8 @@ def parse_input(indir):
 class Node:
     def __init__(self, level, weight, profit, state):
         self.level = level
-        self.profit = profit
         self.weight = weight
+        self.profit = profit
         self.state = state
  
     def __lt__(self, other):
@@ -52,7 +52,7 @@ def solution(W, arr, n, maxTime = float('inf')):
      
     priority_queue = PriorityQueue()
     curr = Node(-1, 0, 0, [])
-    priority_queue.put(curr)
+    priority_queue.put((0, curr))
  
     max_profit, end = bound(curr, n, W, arr, init=True)
     res_state = [i for i in range(end)]
@@ -63,7 +63,7 @@ def solution(W, arr, n, maxTime = float('inf')):
         if time.time() - start > maxTime:
             is_optim = False
             break
-        curr = priority_queue.get()
+        _, curr = priority_queue.get()
  
         if curr.level == -1:
             next = Node(0, 0, 0, [])
@@ -82,12 +82,12 @@ def solution(W, arr, n, maxTime = float('inf')):
  
         next_bound = bound(next, n, W, arr)
         if next_bound > max_profit:
-            priority_queue.put(next)
+            priority_queue.put((-next.profit, next))
  
         next = Node(curr.level + 1, curr.weight, curr.profit, list(curr.state))
         next_bound = bound(next, n, W, arr)
         if next_bound > max_profit:
-            priority_queue.put(next)
+            priority_queue.put((-next.profit, next))
     ret_state = []
     for i in res_state:
         ret_state.append(arr[i][2])
