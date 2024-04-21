@@ -152,26 +152,26 @@ if __name__ == '__main__':
         add_help=True
     )
 
-    parser.add_argument('-i', '--inst', action="store",
+    parser.add_argument('-inst', action="store",
                         type=str,
                         dest="dataPath",
                         default=dataPath,
                         help="input file to read (ex: small_1)")
     
-    parser.add_argument('-a', '--alg', action="store",
+    parser.add_argument('-alg', action="store",
                         type=str,
                         dest="alg",
                         default=alg,
                         choices=['bnb', 'approx', 'ls1', 'ls2'],
                         help="select which algorithm to run")
     
-    parser.add_argument('-t', '--time', action="store",
+    parser.add_argument('-time', action="store",
                         type=int,
                         dest="cutoff",
                         default=cutoff,
                         help="cutoff time for algorithms")
     
-    parser.add_argument('-s', '--seed', action="store",
+    parser.add_argument('-seed', action="store",
                         type=int,
                         dest="seed",
                         default=seed,
