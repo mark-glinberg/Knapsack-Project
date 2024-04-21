@@ -110,9 +110,9 @@ def run_alg(args):
     # Generate output file if not testing our code
     if not test:
         if args.seed:
-            filename = "our_solutions/{}_{}_{}_{}.sol".format(args.dataPath, args.alg, args.cutoff, args.seed)
+            filename = "output/our_solutions/{}_{}_{}_{}.sol".format(args.dataPath, args.alg, args.cutoff, args.seed)
         else:
-            filename = "our_solutions/{}_{}_{}.sol".format(args.dataPath, args.alg, args.cutoff)
+            filename = "output/our_solutions/{}_{}_{}.sol".format(args.dataPath, args.alg, args.cutoff)
         os.makedirs(os.path.dirname(filename), exist_ok=True)
         with open(filename, "w") as f:
             f.write(str(best_value) + "\n")
@@ -121,9 +121,9 @@ def run_alg(args):
         # Generate trace file if the algorithm calls for it
         if trace_file:
             if args.seed:
-                filename = "our_trace_files/{}_{}_{}_{}.trace".format(args.dataPath, args.alg, args.cutoff, args.seed)
+                filename = "output/our_trace_files/{}_{}_{}_{}.trace".format(args.dataPath, args.alg, args.cutoff, args.seed)
             else:
-                filename = "our_trace_files/{}_{}_{}.trace".format(args.dataPath, args.alg, args.cutoff)
+                filename = "output/our_trace_files/{}_{}_{}.trace".format(args.dataPath, args.alg, args.cutoff)
             os.makedirs(os.path.dirname(filename), exist_ok=True)
             with open(filename, "w") as f:
                 for step in trace:
@@ -178,6 +178,9 @@ if __name__ == '__main__':
                         dest="generate",
                         help="whether or not to generate new trace files for plots")
     
+    # Change to parent directory
+    os.chdir("..")
+
     args = parser.parse_args()
     if args.plot:
         plot(args)
