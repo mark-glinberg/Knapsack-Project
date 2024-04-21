@@ -25,7 +25,8 @@ def initialize_solution(weights, capacity):
     return solution
 
 # performs simulated annealing using the given values and weights while ensuring that it stops if capacity is exceeded or temperature reaches stopping_temp
-def simulated_annealing(values, weights, capacity, stopping_temp, cutoff):
+def simulated_annealing(values, weights, capacity, stopping_temp, cutoff, seed):
+    random.seed(seed)
     start = time.time()
     initial_temp = 100 + len(values) * 5
     cooling_rate = 1 / (10 + 0.1 * len(values))

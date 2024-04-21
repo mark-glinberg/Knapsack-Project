@@ -40,7 +40,7 @@ def run_alg(args):
     values = []
     weights = []
     f = open(inputPath, "r")
-    _, capacity = map(int, f.readline().split())
+    num_items, capacity = map(int, f.readline().split())
     for line in f.readlines():
         value, weight = line.split()
         values.append(float(value))
@@ -50,19 +50,24 @@ def run_alg(args):
     # Get optimal solution from file
     if test:
         # Turn full solution into an array for test files
-        opt_sol = []
+        opt_sol_list = []
         f = open(solutionPath, "r")
         for line in f.readlines():
-            opt_sol.append(float(line))
+            opt_sol_list.append(float(line))
         f.close()
+        
+        # Compute actual optimal solution
+        opt_sol_list = [opt_sol_list[i] * values[i] for i in range(num_items)]
+        opt_sol = sum(opt_sol_list)
     else:
         # Grab optimal solution as an int for data files
         f = open(solutionPath, "r")
         opt_sol = float(f.read())
         f.close()
     
-    # Whether to create a trace file
+    # Flag for whether to create a trace file
     trace_file = False
+
     # Calling different algorithms
     if args.alg == 'bnb':
         print("Executing Branch-and-Bound algorithm")
@@ -74,29 +79,21 @@ def run_alg(args):
         print(best_solution)
         print(best_value)
         print(tot_time)
-        if test:
-            sol_val = 0
-            for i in range(len(opt_sol)):
-                if opt_sol[i] == 1.0:
-                    sol_val += values[i]
-            print(sol_val == best_value)
-        else:
-            print(opt_sol == best_value)
+        print(opt_sol == best_value)
     elif args.alg == 'approx':
+        # EXEC approx algorithm
         print("Executing Approximation algorithm")
         best_value, best_solution, alg_time = approximation(values, weights, capacity, cutoff)
 
-        # Create solution file
         print(best_solution)
         print(best_value)
+        print(alg_time)
     elif args.alg == 'ls1':
         print("Executing 1st Local Search algorithm (simulated annealing)")
         # EXEC 1st local search algorithm
 
-        best_value, best_solution, trace = simulated_annealing(values, weights, capacity, 0, cutoff)
-
+        best_value, best_solution, trace = simulated_annealing(values, weights, capacity, 0, cutoff, seed)
         trace_file = True
-        # Create solution file
         
         print(best_solution)
         print(best_value)
@@ -104,15 +101,11 @@ def run_alg(args):
         print("Executing 2nd Local Search algorithm (hill climbing)")
         # EXEC 2nd local search algorithm
         best_value, best_solution, trace = hill_climbing(values, weights, capacity, cutoff, seed)
-        # Flag to generate a trace file
         trace_file = True
 
         print(best_solution)
         print(best_value)
-        if test:
-            print(opt_sol == best_solution)
-        else:
-            print(opt_sol == best_value)
+        print(opt_sol == best_value)
 
     # Generate output file if not testing our code
     if not test:

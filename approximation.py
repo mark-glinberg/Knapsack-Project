@@ -46,6 +46,10 @@ def approximation(values, weights, capacity, cutoff):
             cur_weight += item['weights']
             solution.append(idx)
 
+    if item_frame['values'].max() > cur_value:
+        solution = [item_frame['values'].idxmax()]
+        cur_value = item_frame['values'].max()
+
     alg_time = time.time() - start
     if cutoff_reached:
         alg_time = cutoff
