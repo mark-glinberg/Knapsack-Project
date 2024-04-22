@@ -18,6 +18,8 @@ README.md - this file!
 
 requirements.txt - requirements file to easily set up conda environment
 
+knapsack.yml - packaged conda environment in case requirements.txt does not work
+
 main.py - main file that you run for anything
 
 BnB.py - contains the Branch-and-Bound implementation, called by main.py
@@ -75,7 +77,7 @@ All images and pdfs are generated QRTDs, SQDs, and boxplots for the local search
 
 ## Usage
 
-Navigate to the <code>knapsack-project/code/</code> directory using your conda command prompt. Then run the following commands to create a proper conda environment to run this code (you may skip creating the conda environment if you already can run numpy and matplotlib):
+Navigate to the <code>knapsack-project/code/</code> directory using your conda command prompt. Then run the following commands to create a proper conda environment to run this code (you may skip creating the conda environment if you already can run numpy, pandas, and matplotlib):
 
 ```bash
 >> conda create -n <env_name> python=3.10
@@ -89,6 +91,12 @@ From here, make sure pip is installed using the following line, and afterwards i
 >> conda install pip
 
 >> pip install -r requirements.txt
+```
+
+Alternatively, you can create a conda environment using knapsack.yml:
+
+```bash
+>> conda env create -f knapsack.yml
 ```
 
 Once that's done, you can now run main.py using the following command:
