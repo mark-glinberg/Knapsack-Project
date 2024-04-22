@@ -6,7 +6,7 @@ from approximation import approximation
 from simulated_annealing import simulated_annealing
 from hill_climbing import hill_climbing
 from BnB import BnB_knapsack
-from generate_plots import generate_plots
+#from generate_plots import generate_plots
 # import your python script here when you complete your algorithm
 
 """
