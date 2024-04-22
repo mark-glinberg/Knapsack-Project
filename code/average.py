@@ -19,7 +19,7 @@ for file in files:
             avg_time += time
             avg_value += value
 
-    lines.append("{}: {}, {}\n".format(file, avg_time/10, avg_value/10))
+    lines.append("{}:\t{}, {}\n".format(file, avg_time/10, avg_value/10))
 
 with open("{}_averages.trace".format(alg), "w") as f:
     f.writelines(lines)
