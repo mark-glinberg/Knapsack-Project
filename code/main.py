@@ -72,7 +72,7 @@ def run_alg(args):
     if args.alg == 'bnb':
         print("Executing Branch-and-Bound algorithm")
         # EXEC bnb algorithm
-        best_value, best_solution, trace, tot_time = BnB_knapsack(inputPath, cutoff, "our_solutions", "our_trace_files")
+        best_value, best_solution, trace, tot_time = BnB_knapsack(inputPath, cutoff)
         trace_file = True
         args.seed = None
         best_value = round(best_value, 4)

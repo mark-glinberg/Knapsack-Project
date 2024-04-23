@@ -1,9 +1,31 @@
 import time
 import numpy as np
 
+"""
+Local search algorithm for the 0-1 knapsack problem using hill climbing.
+While within the cutoff time, the algorithm geneartes a random solution (with most of the items not being selected).
+Then with 20% probability it chooses a neighbor (flips a bit) at random and saves that neighbor as the solution.
+The other 80% of the time, the algorithm iterates through all possible neighbors to find the one that has the largest evaluation.
+If the neighbor is better than the current solution, then the current solution is replaced with the neighbor.
+Once no neighbor can replace the current solution, a peak (local max) is reached.
+The resulting peak will replace the best solution if it has a higher evaluation, otherwise the algorithm will restart with another random solution.
 
+Parameters:
+    values (list(float)): Values for each item
+    weights (list(float)): Weights for each item
+    capacity (int): Maximum weight allowed for knapsack
+    cutoff (int): Maximum time algorithm can run
+    seed (int): Seed for random number generation
+
+Returns:
+    best_val (float): Maximum value for solution found by algorithm
+    best_sol list(int): List of items chosen by the solution found by the algorithm
+    trace (list(float, float)): List of tuples for timestamps and values of each better solution found
+"""
 def hill_climbing(values, weights, capacity, cutoff, seed):
+    # Set seed
     np.random.seed(seed=seed)
+    # Convert inputs to np arrays for faster processing
     values = np.array(values)
     weights = np.array(weights)
 
