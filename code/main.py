@@ -108,26 +108,25 @@ def run_alg(args):
         print(opt_sol == best_value)
 
     # Generate output file if not testing our code
-    if not test:
-        if args.seed:
-            filename = "output/our_solutions/{}_{}_{}_{}.sol".format(args.dataPath, args.alg, args.cutoff, args.seed)
+    if args.alg == 'ls1' or args.alg == 'ls2':
+        filename = "output/our_solutions/{}_{}_{}_{}.sol".format(args.dataPath, args.alg, args.cutoff, args.seed)
+    else:
+        filename = "output/our_solutions/{}_{}_{}.sol".format(args.dataPath, args.alg, args.cutoff)
+    os.makedirs(os.path.dirname(filename), exist_ok=True)
+    with open(filename, "w") as f:
+        f.write(str(best_value) + "\n")
+        f.write(", ".join(map(str, best_solution)))
+
+    # Generate trace file if the algorithm calls for it
+    if trace_file:
+        if args.alg == 'ls1' or args.alg == 'ls2':
+            filename = "output/our_trace_files/{}_{}_{}_{}.trace".format(args.dataPath, args.alg, args.cutoff, args.seed)
         else:
-            filename = "output/our_solutions/{}_{}_{}.sol".format(args.dataPath, args.alg, args.cutoff)
+            filename = "output/our_trace_files/{}_{}_{}.trace".format(args.dataPath, args.alg, args.cutoff)
         os.makedirs(os.path.dirname(filename), exist_ok=True)
         with open(filename, "w") as f:
-            f.write(str(best_value) + "\n")
-            f.write(", ".join(map(str, best_solution)))
-
-        # Generate trace file if the algorithm calls for it
-        if trace_file:
-            if args.seed:
-                filename = "output/our_trace_files/{}_{}_{}_{}.trace".format(args.dataPath, args.alg, args.cutoff, args.seed)
-            else:
-                filename = "output/our_trace_files/{}_{}_{}.trace".format(args.dataPath, args.alg, args.cutoff)
-            os.makedirs(os.path.dirname(filename), exist_ok=True)
-            with open(filename, "w") as f:
-                for step in trace:
-                    f.write(", ".join(map(str, step)) + "\n")
+            for step in trace:
+                f.write(", ".join(map(str, step)) + "\n")
 
 def plot(args):
     generate_plots(args.alg, args.generate)
@@ -136,7 +135,7 @@ if __name__ == '__main__':
     # Init default parameters
     dataPath = 'large_3'
     alg = 'ls1'
-    cutoff = 500
+    cutoff = 600
     seed = 0
 
     # Init args

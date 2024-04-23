@@ -17,7 +17,7 @@ lines = ["File\t\tTime(s)\t\t\tValue\t\t\t\tRelErr\n"]
 # Iterate through all instances
 for file in files:
     # Collect all trace files generated for given problem instance (and given alg)
-    paths = glob.glob("../output/our_trace_files/{}_{}*".format(file, alg))
+    paths = glob.glob("../table_instances/traces/{}_{}*".format(file, alg))
     traces = [path.replace("\\", "/") for path in paths]
 
     # Initialize averages
