@@ -37,7 +37,7 @@ def hill_climbing(values, weights, capacity, cutoff, seed):
         weight = np.sum(weights * solution)
         # If the knapsack is overfilled, use the negative of the value
         if weight > capacity:
-            value = -value
+            value = -weight
         return value
     
     # Number of items
@@ -64,8 +64,8 @@ def hill_climbing(values, weights, capacity, cutoff, seed):
             # Otherwise pick the best neighbor (steepest ascent)
             else:
                 # Initialize best neighbor as the smallest number
-                largest_val = -np.inf
-                largest_solution = []
+                best_neighbor_val = -np.inf
+                best_neighbor = []
                 # Iterate through all neighbors to determine best improvement
                 for i in range(n):
                     # Generate a neighboring solution
@@ -73,14 +73,14 @@ def hill_climbing(values, weights, capacity, cutoff, seed):
                     bit_flip[i] = 1 - bit_flip[i]
                     bit_flip_val = eval(bit_flip)
                     # Save the neighboring solution if it's the best one found so far
-                    if bit_flip_val > largest_val:
-                        largest_val = bit_flip_val
-                        largest_solution = np.copy(bit_flip)
+                    if bit_flip_val > best_neighbor_val:
+                        best_neighbor_val = bit_flip_val
+                        best_neighbor = np.copy(bit_flip)
                 # If the best neighboring solution is better than the best solution
                 # for the current random restart, use the neighboring solution
-                if largest_val > sol_val:
-                    sol_val = largest_val
-                    solution = np.copy(largest_solution)
+                if best_neighbor_val > sol_val:
+                    sol_val = best_neighbor_val
+                    solution = np.copy(best_neighbor)
                 # Otherwise a peak is reached
                 else:
                     break
