@@ -5,7 +5,7 @@ import os
 Script to generate the average time, best solution, and relative error generated across all trace files for all instances of a given local search algorithm
 """
 
-alg = "ls1" # Modify for ls1 or ls2
+alg = "ls2" # Modify for ls1 or ls2
 
 # All problem instances
 small_files = ["small_{}".format(i) for i in range(1,11)]
