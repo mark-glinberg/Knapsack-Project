@@ -1,6 +1,6 @@
 # 0-1-Knapsack Algorithms
 
-Mark Glinberg, Seth Nye, Steve Tang, Shih-Huan Chou
+[Mark Glinberg](https://github.com/mark-glinberg), [Seth Nye](https://github.com/san98215), [Steve Tang](https://github.com/stang100), [Shih-Huan Chou](https://github.com/20ryanc)
 
 CSE 6140 - Final Project
 
